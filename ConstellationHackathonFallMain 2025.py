@@ -28,7 +28,7 @@ def main():
     
     # 3. Save the constellation back to the same path
     # FIX 2: Ensures the ABSOLUTE PATH is used for saving, resolving the "wrong directory" issue.
-    Constellation1.save_to_json(json_file_path) 
+    # Constellation1.save_to_json(json_file_path) 
 
 if __name__ == "__main__":
     main()

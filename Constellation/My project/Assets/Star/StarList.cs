@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Unity.VisualScripting.Antlr3.Runtime.Collections;
@@ -10,6 +11,7 @@ public class StarList : MonoBehaviour
     public static StarList Instance;
     private string jsonPath;
     public PyStar py;
+    private Coroutine LoadCoroutine;
 
     [System.Serializable]
     public class StarDataList
@@ -40,6 +42,16 @@ public class StarList : MonoBehaviour
         Debug.Log("Star added: " + star.task);
 
         SaveToJson();
+        if (LoadCoroutine != null)
+        {
+            StopCoroutine(LoadDelayed());
+        }
+        StartCoroutine(LoadDelayed());
+    }
+
+    private IEnumerator LoadDelayed()
+    {
+        yield return new WaitForSeconds(0.1f);
         LoadFromJson();
     }
 
