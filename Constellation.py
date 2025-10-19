@@ -1,15 +1,16 @@
-import sys  # New import for handling command-line arguments
 import json
-# Assuming 'star', 'points', and 'to_do_list' are modules you have created
+# Import your custom classes
 from star import Star
-from points import Point
+from points import Point 
 from to_do_list import TodoList
 
-# --- Helper Function ---
+# --- Helper Function (CONFIRMED) ---
 def sort_stars(starList):
     """Sorts the list of Star objects primarily by X-coordinate, then by Y."""
-    # This assumes Star.get_point() returns an object with .x and .y attributes
-    return sorted(starList, key=lambda star: (star.get_point().x, star.get_point().y))
+    # We rely on the get_point(), get_x_coordinate(), and get_y_coordinate() methods
+    return sorted(starList, 
+        key=lambda star: (star.get_point().get_x_coordinate(), star.get_point().get_y_coordinate())
+    )
 
 # ----------------------------------------------------------------------
 # --- Constellation Class ---
@@ -77,7 +78,8 @@ class Constellation:
     def to_dict(self):
         """Convert the constellation to a dict matching starData.json format."""
         stars_data = []
-        for star in self.starList:
+        # CRITICAL: The list being iterated over (self.starList) MUST BE sorted for the output to be sorted.
+        for star in self.starList: 
             point = star.get_point()
             star_data = {
                 "x": point.get_x_coordinate(),
@@ -89,22 +91,18 @@ class Constellation:
             stars_data.append(star_data)
         return {"stars": stars_data}
     
-    # FIX 2: Removed default parameter to enforce use of the absolute path.
     def save_to_json(self, filename): 
         """Save the constellation to a JSON file."""
         data = self.to_dict()
-        # Uses the absolute path passed in 'filename'
         with open(filename, "w") as f:
             json.dump(data, f, indent=4)
         print(f"✅ Constellation saved to {filename}")
     
-    # FIX 2: Removed default parameter to enforce use of the absolute path.
     @classmethod
     def load_from_json(cls, filename): 
         """Load constellation data from a JSON file into a Constellation object."""
         constellation = cls()
         try:
-            # Uses the absolute path passed in 'filename'
             with open(filename, "r") as f:
                 data = json.load(f)
                 
@@ -116,8 +114,8 @@ class Constellation:
                 
                 constellation.starList.append(star) 
             
-            # FIX 3: Explicitly sort the list after loading to ensure it's sorted 
-            # by X-coordinate before saving or processing.
+            # FIX CONFIRMATION: This ensures the list is sorted after loading 
+            # and before the subsequent save operation.
             constellation.starList = sort_stars(constellation.starList) 
             
             print(f"✅ Loaded constellation with {len(constellation.starList)} stars from {filename}")
