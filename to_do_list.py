@@ -5,7 +5,7 @@ class TodoList:
 
     def run(self):
         while True:
-            #print menu for user to choose
+            #show menu for user to choose from
             print("To-Do List Menu")
             print("1. View all tasks")
             print("2. Add a task")
@@ -36,7 +36,7 @@ class TodoList:
             else:
                 print("Invalid choice. Please enter 1-5.")
 
-    #this function will add task to to-do list
+    #this function will add a task to to-do list
     def add_task(self):
         #ask the user to input a task
         task = {
@@ -44,14 +44,14 @@ class TodoList:
             'name': input("Enter task: "),
             'completed': False,
         }
-        #adding task if it does already exist
+        #adding the task if it does already exist
         if task not in self.to_do_list:
             self.to_do_list.append(task)
             print(f"Task sucessfully added")
         else: 
             print(f"That task already exists.")
 
-    #this function will allow the user to view the to-do list
+    #this function will allow the user to view the full to-do list
     def view_tasks(self):
         if not self.to_do_list:
             print("There are no tasks yet. Add one to get started.")
