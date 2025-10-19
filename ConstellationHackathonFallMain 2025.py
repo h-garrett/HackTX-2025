@@ -14,7 +14,7 @@ def main():
     """
     # 1. Determine the path to the JSON file
     if len(sys.argv) > 1:
-        # FIX 2: Uses the ABSOLUTE PATH passed from the C# code (sys.argv[1])
+        # Uses the ABSOLUTE PATH passed from the C# code (sys.argv[1])
         json_file_path = sys.argv[1] 
     else:
         # Fallback for manual testing 
@@ -24,11 +24,17 @@ def main():
     print(f"Attempting to process file at: {json_file_path}")
 
     # 2. Load the constellation using the determined path
+    # CRITICAL: load_from_json may return None if the file is corrupted.
     Constellation1 = Constellation.load_from_json(json_file_path)
     
-    # 3. Save the constellation back to the same path
-    # FIX 2: Ensures the ABSOLUTE PATH is used for saving, resolving the "wrong directory" issue.
-    # Constellation1.save_to_json(json_file_path) 
+    # 🌟 FIX: Only proceed to save if the load was successful (Constellation1 is not None) 🌟
+    if Constellation1 is not None:
+        # 3. Save the constellation back to the same path
+        # FIX 1: UNCOMMENTED the save line
+        Constellation1.save_to_json(json_file_path)
+    else:
+        print("🛑 Save aborted because JSON file failed to load (corrupted).")
+
 
 if __name__ == "__main__":
     main()

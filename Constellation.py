@@ -4,17 +4,18 @@ from star import Star
 from points import Point 
 from to_do_list import TodoList
 
-# --- Helper Function (CRITICAL FIX) ---
+# --- Helper Function (Numerical Sort Confirmed) ---
 def sort_stars(starList):
     """Sorts the list of Star objects numerically by X-coordinate, then by Y."""
     
-    # 🌟 FIX: Apply float() to the coordinate values before comparison 🌟
+    # Ensures numerical sort regardless of data type from JSON
     return sorted(starList, 
         key=lambda star: (
             float(star.get_point().get_x_coordinate()), 
             float(star.get_point().get_y_coordinate())
         )
     )
+
 
 # ----------------------------------------------------------------------
 # --- Constellation Class ---
@@ -82,7 +83,6 @@ class Constellation:
     def to_dict(self):
         """Convert the constellation to a dict matching starData.json format."""
         stars_data = []
-        # CRITICAL: The list being iterated over (self.starList) MUST BE sorted for the output to be sorted.
         for star in self.starList: 
             point = star.get_point()
             star_data = {
@@ -104,7 +104,10 @@ class Constellation:
     
     @classmethod
     def load_from_json(cls, filename): 
-        """Load constellation data from a JSON file into a Constellation object."""
+        """
+        Load constellation data from a JSON file. 
+        Returns None if the file is corrupted.
+        """
         constellation = cls()
         try:
             with open(filename, "r") as f:
@@ -118,21 +121,20 @@ class Constellation:
                 
                 constellation.starList.append(star) 
             
-            # Sort stars after loading
             constellation.starList = sort_stars(constellation.starList) 
             
-            # --- Save immediately after sorting ---
-            constellation.save_to_json(filename)
-
-            print(f"✅ Loaded and saved constellation with {len(constellation.starList)} stars from {filename}")
+            print(f"✅ Loaded constellation with {len(constellation.starList)} stars from {filename}")
             
         except FileNotFoundError:
-            print(f"⚠️ File not found at path: {filename}")
+            # File not found (e.g., first run): return the new, empty object.
+            print(f"⚠️ File not found at path: {filename}. Starting new constellation.")
+        
         except json.JSONDecodeError:
-            print(f"⚠️ Error decoding {filename}. Check JSON formatting.")
+            # 🌟 FIX: If the file is corrupted, return None to stop the save operation. 🌟
+            print(f"❌ ERROR decoding JSON at: {filename}. File is corrupted.")
+            return None
+            
         return constellation
-
-    
 # List of constellation objcets, used for later if we have time
 class ConstellationList:
     def __init__(self):
