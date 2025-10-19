@@ -12,6 +12,8 @@ class TodoList:
             print("3. Complete a task")
             print("4. Delete a task")
             print("5. Clear all tasks")
+            print("6. Check Task Status")
+            print("7. View Task Details")
 
             #ask user what option they want
             choice = input("Enter your choice (1-5): ")
@@ -32,6 +34,12 @@ class TodoList:
             elif choice == '5':
                 self.to_do_list.clear()
                 print("All tasks cleared")
+
+            elif choice == "6":
+                self.get_task_status()
+
+            elif choice =="7":
+                self.get_task_at_index()
 
             else:
                 print("Invalid choice. Please enter 1-5.")
@@ -94,6 +102,37 @@ class TodoList:
         except ValueError:
             print(f"Please enter a valid task number.")   
     
+    #this function will return the status of a task (true/false)
+    def get_task_status(self):
+        self.view_tasks()
+        try:
+            task_number = int(input("Enter task ID to check status: "))
+            for task in self.to_do_list:
+                if task['number'] == task_number:
+                    if task['completed']:
+                        print(f"Task {task_number} is Completed")
+                    else:
+                        print(f"Task {task_number} is Not Completed")
+                    return
+            print(f"Task {task_number} is not found")
+        except ValueError:
+            print("Please enter valid task number")
+
+    #this function will return the task at the specified index
+    def get_task_at_index (self):
+        try:
+            index = int(input("Enter index: "))
+            if 0 <= index < len(self.to_do_list):
+                task = self.to_do_list[index]
+                status = "Completed" if task['completed'] else "Not Completed"
+                print(f"Task at Index {index}, Number: {task['number']}, Name: {task['name']}, Status: {status}")
+            else:
+                print(f"No task at index {index})")
+        except ValueError:
+            print("Please enter a valid index number.")
+
+
+
 #runs the program
 if __name__ == "__main__":
     todo_list = TodoList()
