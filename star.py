@@ -11,9 +11,9 @@ class Star:
         self.task = task
         self.completed = False
 
-        def __repr__(self):
-            return f"Coordinates of Star ({self.get_star_x_coordinate}, {self.get_star_y_coordinate}) with Task: {self.task} Completed: {self.completed}" 
-
+    def __repr__(self):
+        status = "Completed" if self.completed else "Not Completed"
+        return f"Star at {self.coordinates} with Task: '{self.task}' - Status: {status}"
     # When a task is compleded the star goes from dim to light
     # Called whenever the task is marked completed in the to do list
     def light_star (self):
@@ -30,9 +30,9 @@ class Star:
         return self.task
     
     def get_star_x_coordinate(self):
-        return self.coordinates.get_x_coordinate()
+        return (self.coordinates).get_x_coordinate()
     
     def get_star_y_coordinate(self):
-        return self.coordinates.get_y_coordinate()
+        return (self.coordinates).get_y_coordinate()
     
     

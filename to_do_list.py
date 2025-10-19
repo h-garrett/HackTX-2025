@@ -123,7 +123,37 @@ class TodoList:
                     return
             print(f"Task {task_number} not found.") 
         except ValueError:
-            print(f"Please enter a valid task number.")   
+            print(f"Please enter a valid task number.") 
+    
+    # this function will get the index of a task if its in the list
+    def get_task_index(self,task_name):
+        for i, task in enumerate(self.to_do_list):
+            if task['name'] == task_name:
+                return i
+        return -1
+    # remove the task by its name if its in the list
+    def remove_task_by_name(self, task_name):
+        index = self.get_task_index(task_name)
+        if index != -1:
+            self.to_do_list.pop(index)
+            self.save_to_do_list()
+            print(f"Task '{task_name}' removed successfully.")
+        else:
+            print(f"Task '{task_name}' not found.")
+
+    def add_task_direct(self, task_name):
+        task = {
+            'number': len(self.to_do_list) + 1,
+            'name': task_name,
+            'completed': False,
+        }
+        if task not in self.to_do_list:
+            self.to_do_list.append(task)
+            self.save_to_do_list() 
+            print(f"Task '{task_name}' added successfully.")
+        else: 
+            print(f"Task '{task_name}' already exists.")
+        return task
     
     #this function will return the status of a task (true/false)
     def get_task_status(self):

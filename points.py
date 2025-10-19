@@ -9,11 +9,21 @@ class Point:
 
     def __repr__(self):
         return f"Coordinates ({self.x}, {self.y})"
+    def get_x_coordinate(self):
+        return self.x
+
+    def get_y_coordinate(self):
+     return self.y
+
+    def get_set_of_coordinates(self):
+        return (self.x, self.y)
+
 
 # sorts the points in a list based on x and y values
 # does x first, then y
 def sort_points(points):
     return sorted(points, key=lambda p: (p.x, p.y))
+
 
 
 class PointList:
