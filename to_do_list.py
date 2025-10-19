@@ -1,7 +1,9 @@
 
+
 class TodoList:
     def __init__(self):
         self.to_do_list = []
+    
 
     def run(self):
         while True:
@@ -10,9 +12,10 @@ class TodoList:
             print("2. Add a task")
             print("3. Complete a task")
             print("4. Delete a task")
-            print("5. Exit")
+            print("5. Clear all tasks")
+            print ("6. Exit")
 
-            choice = input("Enter your choice (1-5): ")
+            choice = input("Enter your choice (1-6): ")
 
             if choice == "1":
                 self.view_tasks()
@@ -29,7 +32,9 @@ class TodoList:
             elif choice == '5':
                 self.to_do_list.clear()
                 print("All tasks cleared")
-
+            elif choice == '6':
+                print("Exiting To-Do List.")
+                break
             else:
                 print("Invalid choice. Please enter 1-5.")
 
@@ -90,6 +95,6 @@ class TodoList:
             print(f"Please enter a valid task number.")   
     
 
-if __name__ == "__main__":
-    todo_list = TodoList()
-    todo_list.run()
+# if __name__ == "__main__":
+#     todo_list = TodoList()
+#     todo_list.run()

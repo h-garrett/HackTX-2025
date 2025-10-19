@@ -27,6 +27,12 @@ class PointList:
     
     def get_point(self, index):
         return self.points[index]
+    
+    def get_range(self, start, end):
+        return self.points[start:end]
+    
+    def get_points(self):
+        return self.points
 
 
 
