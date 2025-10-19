@@ -1,7 +1,26 @@
+import json
 
 class TodoList:
     def __init__(self):
+        self.filename = 'todos.json'
         self.to_do_list = []
+        self.load_to_do_list()
+
+    #this function will load to-do list from JSON file
+    def load_to_do_list(self):
+        try: 
+            with open(self.filename, 'r') as file:
+                self.to_do_list = json.load(file)
+            print(f"Loaded {len(self.to_do_list)} task(s) from {self.filename}")
+        except FileNotFoundError:
+            print(f"No existing file found.")
+        except json.JSONDecodeError:
+            print(f"Error reading file.")
+
+    #this function will save to-do list to JSON file
+    def save_to_do_list(self):
+        with open(self.filename, "w") as file:
+            json.dump(self.tasks, file, indent = 2)
 
     def run(self):
         while True:
@@ -16,7 +35,7 @@ class TodoList:
             print("7. View Task Details")
 
             #ask user what option they want
-            choice = input("Enter your choice (1-5): ")
+            choice = input("Enter your choice (1-7): ")
 
             #based on what the user chooses, it will run the respective functions
             if choice == "1":
@@ -33,6 +52,7 @@ class TodoList:
             
             elif choice == '5':
                 self.to_do_list.clear()
+                self.save_to_do_list()
                 print("All tasks cleared")
 
             elif choice == "6":
@@ -42,7 +62,7 @@ class TodoList:
                 self.get_task_at_index()
 
             else:
-                print("Invalid choice. Please enter 1-5.")
+                print("Invalid choice. Please enter 1-7.")
 
     #this function will add a task to to-do list
     def add_task(self):
@@ -55,6 +75,7 @@ class TodoList:
         #adding the task if it does already exist
         if task not in self.to_do_list:
             self.to_do_list.append(task)
+            self.save_to_do_list() 
             print(f"Task sucessfully added")
         else: 
             print(f"That task already exists.")
@@ -83,6 +104,7 @@ class TodoList:
         for task in self.to_do_list:
             if task['number'] == task_number:
                 task['completed'] = True
+                self.save_to_do_list()
                 print(f"✓ Task {task_number} marked as complete!")
                 return
             
@@ -96,6 +118,7 @@ class TodoList:
             for i, task in enumerate(self.to_do_list):
                 if task['number'] == task_number:
                     removed = self.to_do_list.pop(i)
+                    self.save_to_do_list()
                     print(f"Task Sucessfully Removed")
                     return
             print(f"Task {task_number} not found.") 
