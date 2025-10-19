@@ -4,12 +4,16 @@ from star import Star
 from points import Point 
 from to_do_list import TodoList
 
-# --- Helper Function (CONFIRMED) ---
+# --- Helper Function (CRITICAL FIX) ---
 def sort_stars(starList):
-    """Sorts the list of Star objects primarily by X-coordinate, then by Y."""
-    # We rely on the get_point(), get_x_coordinate(), and get_y_coordinate() methods
+    """Sorts the list of Star objects numerically by X-coordinate, then by Y."""
+    
+    # 🌟 FIX: Apply float() to the coordinate values before comparison 🌟
     return sorted(starList, 
-        key=lambda star: (star.get_point().get_x_coordinate(), star.get_point().get_y_coordinate())
+        key=lambda star: (
+            float(star.get_point().get_x_coordinate()), 
+            float(star.get_point().get_y_coordinate())
+        )
     )
 
 # ----------------------------------------------------------------------
@@ -107,15 +111,15 @@ class Constellation:
                 data = json.load(f)
                 
             for star_data in data.get("stars", []):
-                point = Point(star_data["x"], star_data["y"])
+                # NOTE: Point() constructor must be able to handle float/int/string
+                point = Point(star_data["x"], star_data["y"]) 
                 star = Star(point, star_data["task"])
                 if star_data.get("complete"):
                     star.light_star()
                 
                 constellation.starList.append(star) 
             
-            # FIX CONFIRMATION: This ensures the list is sorted after loading 
-            # and before the subsequent save operation.
+            # This call now uses the numerically sound sort_stars function
             constellation.starList = sort_stars(constellation.starList) 
             
             print(f"✅ Loaded constellation with {len(constellation.starList)} stars from {filename}")
@@ -125,8 +129,6 @@ class Constellation:
         except json.JSONDecodeError:
             print(f"⚠️ Error decoding {filename}. Check JSON formatting.")
         return constellation
-    
-   
 
     
 # List of constellation objcets, used for later if we have time
