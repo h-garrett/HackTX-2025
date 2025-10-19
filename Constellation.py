@@ -89,18 +89,22 @@ class Constellation:
             stars_data.append(star_data)
         return {"stars": stars_data}
     
+    # FIX 2: Removed default parameter to enforce use of the absolute path.
     def save_to_json(self, filename): 
         """Save the constellation to a JSON file."""
         data = self.to_dict()
+        # Uses the absolute path passed in 'filename'
         with open(filename, "w") as f:
             json.dump(data, f, indent=4)
         print(f"✅ Constellation saved to {filename}")
     
+    # FIX 2: Removed default parameter to enforce use of the absolute path.
     @classmethod
     def load_from_json(cls, filename): 
         """Load constellation data from a JSON file into a Constellation object."""
         constellation = cls()
         try:
+            # Uses the absolute path passed in 'filename'
             with open(filename, "r") as f:
                 data = json.load(f)
                 
@@ -110,11 +114,10 @@ class Constellation:
                 if star_data.get("complete"):
                     star.light_star()
                 
-                # Append directly to the list to build it quickly
                 constellation.starList.append(star) 
             
-            # 🌟 THE FIX: Ensure the list is sorted immediately after loading 🌟
-            # This applies the sorting regardless of the order in the input JSON.
+            # FIX 3: Explicitly sort the list after loading to ensure it's sorted 
+            # by X-coordinate before saving or processing.
             constellation.starList = sort_stars(constellation.starList) 
             
             print(f"✅ Loaded constellation with {len(constellation.starList)} stars from {filename}")
