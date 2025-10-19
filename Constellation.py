@@ -111,7 +111,6 @@ class Constellation:
                 data = json.load(f)
                 
             for star_data in data.get("stars", []):
-                # NOTE: Point() constructor must be able to handle float/int/string
                 point = Point(star_data["x"], star_data["y"]) 
                 star = Star(point, star_data["task"])
                 if star_data.get("complete"):
@@ -119,10 +118,13 @@ class Constellation:
                 
                 constellation.starList.append(star) 
             
-            # This call now uses the numerically sound sort_stars function
+            # Sort stars after loading
             constellation.starList = sort_stars(constellation.starList) 
             
-            print(f"✅ Loaded constellation with {len(constellation.starList)} stars from {filename}")
+            # --- Save immediately after sorting ---
+            constellation.save_to_json(filename)
+
+            print(f"✅ Loaded and saved constellation with {len(constellation.starList)} stars from {filename}")
             
         except FileNotFoundError:
             print(f"⚠️ File not found at path: {filename}")
