@@ -1,23 +1,9 @@
 {
-    "stars": [
+    "starsData": [
         {
-            "x": -4.144836902618408,
-            "y": 0.8801946640014648,
-            "task": "test 1",
-            "complete": false,
-            "connected": false
-        },
-        {
-            "x": -1.189117431640625,
-            "y": -1.4794129133224488,
-            "task": "data 2'",
-            "complete": false,
-            "connected": false
-        },
-        {
-            "x": 2.1888468265533449,
-            "y": 0.32134079933166506,
-            "task": "data 3",
+            "x": -0.4427873492240906,
+            "y": 0.18193590641021729,
+            "task": "",
             "complete": false,
             "connected": false
         }

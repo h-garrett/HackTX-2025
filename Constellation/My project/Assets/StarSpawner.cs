@@ -33,7 +33,6 @@ public class StarSpawner : MonoBehaviour
                 EnablePlacement();
             }
 
-            // Call your submit function here
         }
 
         if (isPlacing && Mouse.current.leftButton.wasPressedThisFrame)

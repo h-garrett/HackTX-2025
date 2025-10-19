@@ -6,9 +6,16 @@ using UnityEngine;
 
 public class StarList : MonoBehaviour
 {
-    public List<StarData> stars = new List<StarData>();
+    public List<StarData> stars;
     public static StarList Instance;
     private string jsonPath;
+    public PyStar py;
+
+    [System.Serializable]
+    public class StarDataList
+    {
+        public List<StarData> starsData = new List<StarData>();
+    }
 
 
     private void Awake()
@@ -33,12 +40,23 @@ public class StarList : MonoBehaviour
         Debug.Log("Star added: " + star.task);
 
         SaveToJson();
+        LoadFromJson();
     }
 
 
     private void SaveToJson()
     {
-        StarList wrapper = new StarList { stars = stars };
+        StarDataList wrapper = new StarDataList();
+        foreach (StarData starData in stars)
+        {
+            wrapper.starsData.Add(new StarData
+            {
+                x = starData.x,
+                y = starData.y,
+                task = starData.task
+            });
+        }
+
         string json = JsonUtility.ToJson(wrapper, true);
         File.WriteAllText(jsonPath, json);
         Debug.Log("Stars saved to JSON at " + jsonPath);
@@ -48,9 +66,15 @@ public class StarList : MonoBehaviour
     {
         if (!File.Exists(jsonPath)) return;
 
+        py.RunPythonScript(); // Optional: run Python first
+
         string json = File.ReadAllText(jsonPath);
-        StarList wrapper = JsonUtility.FromJson<StarList>(json);
-        stars = wrapper.stars;
+
+        // Deserialize into the plain wrapper class, NOT the MonoBehaviour
+        StarDataList wrapper = JsonUtility.FromJson<StarDataList>(json);
+
+        // Assign the deserialized data back to your stars list
+        stars = wrapper.starsData;
     }
 
 }

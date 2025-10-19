@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -8,7 +9,16 @@ public class UIManager : MonoBehaviour
 {
     public GameObject optionsMenuPanel; // assign your panel here
     public GameObject inputBlock;
+    public GameObject hoverPanel;
+    public TMP_Text hoverText;
+    private RectTransform hoverPanelRect;
 
+
+    private void Start()
+    {
+        hoverPanelRect = hoverPanel.GetComponent<RectTransform>();
+        hoverPanel.SetActive(false);
+    }
     void Update()
     {
 
@@ -38,6 +48,12 @@ public class UIManager : MonoBehaviour
 
         }
 
+        if (hoverPanel.activeSelf)
+        {
+            Vector2 mousePos = Mouse.current.position.ReadValue();
+            hoverPanelRect.position = mousePos + new Vector2(10, -10);
+        }
+
         
 
 
@@ -63,6 +79,17 @@ public class UIManager : MonoBehaviour
     public void unblockInput()
     {
         inputBlock.SetActive(false);
+    }
+
+    public void ShowTask(string text)
+    {
+        hoverText.text = text;
+        hoverPanel.SetActive(true);
+    }
+
+    public void HideTask()
+    {
+        hoverPanel.SetActive(false);
     }
 
 }
