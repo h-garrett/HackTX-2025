@@ -12,7 +12,7 @@ class Constellation:
     
     # Add star coordinates to constellation, the coordinates are point objcets, so adding a point object to the list
     def add_star(self, point):
-        self.starCords.add_point(point)
+        self.starCords.append(point)
         self.tasks.add_task()
 
     def get_stars(self):
