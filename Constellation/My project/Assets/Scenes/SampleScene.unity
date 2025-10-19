@@ -534,8 +534,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ac3edc2d84fb6c45bf910488e18a470, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  list: {fileID: 0}
   pythonPath: C:\Users\garre\AppData\Local\Python\bin\python.exe
-  scriptPath: C:\Users\garre\GitHub\HackTX-2025\ConstellationHackathonFallMain2025.py
+  scriptPath: C:\Users\garre\GitHub\HackTX-2025\ConstellationHackathonFallMain 2025.py
   jsonPath: C:\Users\garre\GitHub\HackTX-2025\data\starData.json
 --- !u!1 &832575517
 GameObject:

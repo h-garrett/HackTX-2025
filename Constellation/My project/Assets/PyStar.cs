@@ -6,9 +6,9 @@ public class PyStar : MonoBehaviour
 {
     public StarList list;
 
-    public string pythonPath = @"C:\Users\garre\AppData\Local\Python\bin\python.exe";
-    public string scriptPath = @"C:\Users\garre\GitHub\HackTX-2025\constellation_main.py";
-    public string jsonPath = @"C:\Users\garre\GitHub\HackTX-2025\starData.json";
+    public string pythonPath;
+    public string scriptPath;
+    public string jsonPath;
     public void RunPythonScript()
     {
         ProcessStartInfo psi = new ProcessStartInfo();
@@ -31,7 +31,6 @@ public class PyStar : MonoBehaviour
         }
 
         UnityEngine.Debug.Log("Python script finished running.");
-        list.LoadFromJson();
     }
 }
 
