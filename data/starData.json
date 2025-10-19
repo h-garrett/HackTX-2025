@@ -1,0 +1,25 @@
+{
+    "starsData": [
+        {
+            "x": -0.4150317311286926,
+            "y": 0.8354742527008057,
+            "task": "2",
+            "complete": false,
+            "connected": false
+        },
+        {
+            "x": -2.9268736839294435,
+            "y": -0.1461648941040039,
+            "task": "1",
+            "complete": false,
+            "connected": false
+        },
+        {
+            "x": 2.3422210216522219,
+            "y": -0.3627023696899414,
+            "task": "3",
+            "complete": false,
+            "connected": false
+        }
+    ]
+}

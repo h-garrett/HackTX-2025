@@ -5,8 +5,8 @@ using UnityEngine;
 public class PyStar : MonoBehaviour
 {
 
-    public string pythonPath = @"C:\Users\garre\AppData\Local\Microsoft\WindowsApps\python.exe";
-    public string scriptPath = @"C:\Users\garre\GitHub\HackTX-2025\Constellation Hackathon Fall Main 2025.py";
+    public string pythonPath = @"C:\Users\garre\AppData\Local\Python\bin\python.exe";
+    public string scriptPath = @"C:\Users\garre\GitHub\HackTX-2025\constellation_main.py";
     public string jsonPath = @"C:\Users\garre\GitHub\HackTX-2025\starData.json";
     public void RunPythonScript()
     {

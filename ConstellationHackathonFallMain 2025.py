@@ -18,7 +18,7 @@ def main():
         json_file_path = sys.argv[1] 
     else:
         # Fallback for manual testing 
-        json_file_path = "data/test.json" 
+        json_file_path = "data/starData.json" 
         os.makedirs("data", exist_ok=True) 
 
     print(f"Attempting to process file at: {json_file_path}")

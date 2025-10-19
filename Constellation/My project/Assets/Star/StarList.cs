@@ -26,8 +26,8 @@ public class StarList : MonoBehaviour
             Destroy(gameObject);
 
         // Save JSON in Assets folder (editor only) or use persistentDataPath for builds
-        jsonPath = Path.Combine(Application.dataPath, "starData.json");
-        Debug.Log("saved to" + Application.dataPath);
+        jsonPath = @"C:\Users\garre\GitHub\HackTX-2025\data\starData.json";
+        Debug.Log("saved to" + jsonPath);
     }
 
     public void AddStar(Star star)
