@@ -84,12 +84,12 @@ class Constellation:
                 "y": point.get_y_coordinate(),
                 "task": star.get_task(),
                 "complete": star.get_completion_status(),
-                "connected": False  # placeholder until connection tracking exists
+                "connected": False 
             }
             stars_data.append(star_data)
         return {"stars": stars_data}
     
-    def save_to_json(self, filename): # Takes the absolute path
+    def save_to_json(self, filename): 
         """Save the constellation to a JSON file."""
         data = self.to_dict()
         with open(filename, "w") as f:
@@ -97,29 +97,33 @@ class Constellation:
         print(f"✅ Constellation saved to {filename}")
     
     @classmethod
-    def load_from_json(cls, filename): # Now expects the absolute path
+    def load_from_json(cls, filename): 
         """Load constellation data from a JSON file into a Constellation object."""
         constellation = cls()
         try:
-            # FIX APPLIED: 'filename' is now the absolute path passed from C#
             with open(filename, "r") as f:
                 data = json.load(f)
+                
             for star_data in data.get("stars", []):
                 point = Point(star_data["x"], star_data["y"])
                 star = Star(point, star_data["task"])
                 if star_data.get("complete"):
                     star.light_star()
-                constellation.add_star(star)
+                
+                # Append directly to the list to build it quickly
+                constellation.starList.append(star) 
+            
+            # 🌟 THE FIX: Ensure the list is sorted immediately after loading 🌟
+            # This applies the sorting regardless of the order in the input JSON.
+            constellation.starList = sort_stars(constellation.starList) 
+            
             print(f"✅ Loaded constellation with {len(constellation.starList)} stars from {filename}")
+            
         except FileNotFoundError:
-            # Reports the full path that failed to open
             print(f"⚠️ File not found at path: {filename}")
         except json.JSONDecodeError:
             print(f"⚠️ Error decoding {filename}. Check JSON formatting.")
         return constellation
-
-
-
     
    
 
