@@ -1,43 +1,68 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class UIManager : MonoBehaviour
 {
-    public GameObject contextMenuPanel; // assign your panel here
+    public GameObject optionsMenuPanel; // assign your panel here
+    public GameObject inputBlock;
 
     void Update()
     {
+
+        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+        Physics.Raycast(ray, out RaycastHit hit);
         // Check for right-click (mouse or gamepad equivalent)
         if (Mouse.current.rightButton.wasPressedThisFrame)
         {
             // Raycast from mouse into the 3D world
-            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-            if (!Physics.Raycast(ray, out RaycastHit hit))
+
+            if (!(hit.collider.CompareTag("Star")))
             {
                 // Nothing was hit, open the menu
-                contextMenuPanel.SetActive(true);
+                optionsMenuPanel.SetActive(true);
 
                 // Convert screen position to local position in this canvas
-                RectTransform rt = contextMenuPanel.GetComponent<RectTransform>();
+                RectTransform rt = optionsMenuPanel.GetComponent<RectTransform>();
                 Vector2 localPoint;
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(
                     transform as RectTransform,      // the canvas itself
                     Mouse.current.position.ReadValue(),
-                    null,                             // null works if canvas is Screen Space - Overlay
+                    null,
                     out localPoint
                 );
                 rt.localPosition = localPoint;
             }
-            else
-            {
-                // If clicked on an object, optionally close the menu
-                contextMenuPanel.SetActive(false);
-            }
+
         }
 
-        if (Mouse.current.leftButton.wasPressedThisFrame && contextMenuPanel.activeSelf)
-        {
-            contextMenuPanel.SetActive(false);
-        }
+        
+
+
     }
+
+    public void CloseMenuNextFrame()
+    {
+        StartCoroutine(CloseMenuDelayed());
+    }
+
+    private IEnumerator CloseMenuDelayed()
+    {
+        yield return null; // wait one frame
+        yield return new WaitForEndOfFrame();
+        optionsMenuPanel.SetActive(false);
+    }
+
+    public void blockMouse()
+    {
+        inputBlock.SetActive(true);
+    }
+
+    public void unblockInput()
+    {
+        inputBlock.SetActive(false);
+    }
+
 }
