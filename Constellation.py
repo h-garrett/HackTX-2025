@@ -1,5 +1,7 @@
 from star import Star
+from points import Point   
 from to_do_list import TodoList
+import json
 class Constellation:
     # Starcords is a stars
     # tasks is a to do list object. where each task is set to an object
@@ -60,11 +62,58 @@ class Constellation:
                 return True
         
         return False
+    
+    def to_dict(self):
+        """Convert the constellation to a dict matching starData.json format."""
+        stars_data = []
+        for star in self.starList:
+            point = star.get_point()
+            star_data = {
+                "x": point.get_x_coordinate(),
+                "y": point.get_y_coordinate(),
+                "task": star.get_task(),
+                "complete": star.get_completion_status(),
+                "connected": False  # placeholder until connection tracking exists
+            }
+            stars_data.append(star_data)
+        return {"stars": stars_data}
+    
+    def save_to_json(self, filename="starData.json"):
+        """Save the constellation to a JSON file."""
+        data = self.to_dict()
+        with open(filename, "w") as f:
+            json.dump(data, f, indent=4)
+        print(f"✅ Constellation saved to {filename}")
+    
+    @classmethod
+    def load_from_json(cls, filename="starData.json"):
+        """Load constellation data from a JSON file into a Constellation object."""
+        constellation = cls()
+        try:
+            with open(filename, "r") as f:
+                data = json.load(f)
+            for star_data in data.get("stars", []):
+                point = Point(star_data["x"], star_data["y"])
+                star = Star(point, star_data["task"])
+                if star_data.get("complete"):
+                    star.light_star()
+                constellation.add_star(star)
+            print(f"✅ Loaded constellation with {len(constellation.starList)} stars from {filename}")
+        except FileNotFoundError:
+            print(f"⚠️ File {filename} not found.")
+        except json.JSONDecodeError:
+            print(f"⚠️ Error decoding {filename}. Check JSON formatting.")
+        return constellation
 
 def sort_stars(starList):
     return sorted(starList, key=lambda star: (star.get_point().x, star.get_point().y))
 
+
+
+
     
+   
+
     
 # List of constellation objcets, used for later if we have time
 class ConstellationList:
