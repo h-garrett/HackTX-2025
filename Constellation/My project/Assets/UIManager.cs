@@ -51,7 +51,7 @@ public class UIManager : MonoBehaviour
         if (hoverPanel.activeSelf)
         {
             Vector2 mousePos = Mouse.current.position.ReadValue();
-            hoverPanelRect.position = mousePos + new Vector2(10, -10);
+            hoverPanelRect.position = mousePos + new Vector2(30, -30);
         }
 
         

@@ -6,16 +6,19 @@ public class Star : MonoBehaviour
     public float y;
     public string task;
     public bool hovered;
+    public bool complete;
 
     private Material mat;
     private Color baseEmissionColor;
-    public float glowIntensity = 4f;
+    private Color glowEmissionColor;
+    public float glowIntensity;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
         mat = GetComponent<Renderer>().material;
         baseEmissionColor = mat.GetColor("_EmissionColor");
+        glowEmissionColor = baseEmissionColor * glowIntensity;
     }
     void Awake()
     {
@@ -38,17 +41,23 @@ public class Star : MonoBehaviour
     public void wasClicked()
     {
         Debug.Log("This Star was clicked!");
+        complete = true;
+        mat.SetColor("_EmissionColor", baseEmissionColor * Mathf.LinearToGammaSpace(glowIntensity * 2));
     }
 
     public void setHovered(bool hovered)
     {
-        if (hovered)
+        if (!complete)
         {
-            mat.SetColor("_EmissionColor", baseEmissionColor * Mathf.LinearToGammaSpace(glowIntensity));
+            if (hovered)
+            {
+                mat.SetColor("_EmissionColor", baseEmissionColor * Mathf.LinearToGammaSpace(glowIntensity));
+            }
+            else
+            {
+                mat.SetColor("_EmissionColor", baseEmissionColor);
+            }
         }
-        else
-        {
-            mat.SetColor("_EmissionColor", baseEmissionColor);
-        }
+
     }
 }
