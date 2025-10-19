@@ -2,6 +2,8 @@ from points import Point, PointList
 from to_do_list import TodoList
 
 class Constellation:
+    # Starcords is a list of points, each point is one star
+    # tasks is a to do list object. where each task is set to an object
     def __init__(self, PointList, TodoList):
         self.name = ""
         self.starCords = PointList
@@ -15,12 +17,13 @@ class Constellation:
         self.starCords.append(point)
         self.tasks.add_task()
 
+    # return all the points
     def get_stars(self):
         return self.starCords
-    
+    # return all the tasks
     def get_tasks(self):
         return self.tasks.to_do_list
-    
+    # return the name
     def get_constellation_name(self):
         return self.name
     
@@ -29,7 +32,7 @@ class Constellation:
 
     
     
-
+# List of constellation objcets, used for later if we have time
 class ConstellationList:
     def __init__(self):
         self.constellations = []
