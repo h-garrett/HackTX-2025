@@ -1,14 +1,26 @@
-from star import Star
-from points import Point   
-from to_do_list import TodoList
+import sys  # New import for handling command-line arguments
 import json
+# Assuming 'star', 'points', and 'to_do_list' are modules you have created
+from star import Star
+from points import Point
+from to_do_list import TodoList
+
+# --- Helper Function ---
+def sort_stars(starList):
+    """Sorts the list of Star objects primarily by X-coordinate, then by Y."""
+    # This assumes Star.get_point() returns an object with .x and .y attributes
+    return sorted(starList, key=lambda star: (star.get_point().x, star.get_point().y))
+
+# ----------------------------------------------------------------------
+# --- Constellation Class ---
+# ----------------------------------------------------------------------
+
 class Constellation:
-    # Starcords is a stars
-    # tasks is a to do list object. where each task is set to an object
+    
     def __init__(self):
         self.name = ""
         self.starList = []
-       
+        
 
     def __repr__(self):
         return f"Constellation Name: {self.name} with Stars: {self.starList}"
@@ -25,8 +37,7 @@ class Constellation:
             return
         self.starList.remove(star)
         self.starList = sort_stars(self.starList)
-    # return a new list of sorted stars        
-   
+        
     # return the star at an index
     def get_star(self, index):
         if index < 0 or index >= len(self.starList):
@@ -56,9 +67,9 @@ class Constellation:
     
     def can_make_line(self, star1, star2):
         index_star1 = self.starList.index(star1)
-        index_star2 = self.starList.index(star2)  
+        index_star2 = self.starList.index(star2) 
         if abs(index_star1 - index_star2) == 1:
-            if star1.get_completion_status() and star2.get_completion_status():  
+            if star1.get_completion_status() and star2.get_completion_status(): 
                 return True
         
         return False
@@ -78,7 +89,7 @@ class Constellation:
             stars_data.append(star_data)
         return {"stars": stars_data}
     
-    def save_to_json(self, filename="starData.json"):
+    def save_to_json(self, filename): # Takes the absolute path
         """Save the constellation to a JSON file."""
         data = self.to_dict()
         with open(filename, "w") as f:
@@ -86,10 +97,11 @@ class Constellation:
         print(f"✅ Constellation saved to {filename}")
     
     @classmethod
-    def load_from_json(cls, filename="starData.json"):
+    def load_from_json(cls, filename): # Now expects the absolute path
         """Load constellation data from a JSON file into a Constellation object."""
         constellation = cls()
         try:
+            # FIX APPLIED: 'filename' is now the absolute path passed from C#
             with open(filename, "r") as f:
                 data = json.load(f)
             for star_data in data.get("stars", []):
@@ -100,14 +112,11 @@ class Constellation:
                 constellation.add_star(star)
             print(f"✅ Loaded constellation with {len(constellation.starList)} stars from {filename}")
         except FileNotFoundError:
-            print(f"⚠️ File {filename} not found.")
+            # Reports the full path that failed to open
+            print(f"⚠️ File not found at path: {filename}")
         except json.JSONDecodeError:
             print(f"⚠️ Error decoding {filename}. Check JSON formatting.")
         return constellation
-
-def sort_stars(starList):
-    return sorted(starList, key=lambda star: (star.get_point().x, star.get_point().y))
-
 
 
 
